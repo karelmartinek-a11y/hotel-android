@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Core permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Camera flow for taking report photos -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Notifications (Android 13+) for local notifications triggered by WorkManager polling -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- We intentionally do NOT request READ/WRITE external storage.
+         Photos are stored in app-private storage for offline queue and uploaded from there.
+    -->
+
+    <application
+        android:name="cz.hcasc.hotel.App"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="ASC Hotel Chodov"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.HotelApp">
+
+        <!-- FileProvider for CameraX / capturing photos to app-private storage -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name="cz.hcasc.hotel.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="unspecified">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Deep link from notifications into a specific tab (no external auth) -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Internal app deep links only; no requirement for server association -->
+                <data
+                    android:scheme="hotelapp"
+                    android:host="open"
+                    android:pathPrefix="/" />
+            </intent-filter>
+
+        </activity>
+
+    </application>
+</manifest>

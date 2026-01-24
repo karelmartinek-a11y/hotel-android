@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ASC Hotel Chodov</string>
+
+    <!-- Branding -->
+    <string name="slogan">Tady jste doma</string>
+
+    <!-- Welcome / Gate states -->
+    <string name="welcome_title">ASC Hotel Chodov</string>
+    <string name="welcome_status_online_required">Připojte OnLine</string>
+    <string name="welcome_status_activate">Aktivujte</string>
+    <string name="welcome_status_welcome">Vítejte doma</string>
+    <string name="welcome_hint_double_tap">Dvojité klepnutí spustí aplikaci</string>
+    <string name="welcome_device_id">Device ID</string>
+    <string name="welcome_version">Verze</string>
+
+    <!-- Tabs -->
+    <string name="tab_housekeeping">Pokojská</string>
+    <string name="tab_frontdesk">Recepce</string>
+    <string name="tab_maintenance">Údržba</string>
+
+    <!-- Housekeeping -->
+    <string name="hk_title">Pokojská</string>
+    <string name="hk_type_found">Nález</string>
+    <string name="hk_type_issue">Závada</string>
+    <string name="hk_take_photo_found">Vyfoť nález</string>
+    <string name="hk_take_photo_issue">Vyfoť závadu</string>
+    <string name="hk_photo_limit">Maximálně 5 fotek</string>
+    <string name="hk_accept">Přijmout</string>
+    <string name="hk_retry">Opakovat</string>
+    <string name="hk_add_description">Přidej popis</string>
+    <string name="hk_description_hint">Popis (max 50 znaků)</string>
+    <string name="hk_send">Odešli…</string>
+    <string name="hk_select_room">Vyber pokoj</string>
+    <string name="hk_room">Pokoj</string>
+    <string name="hk_saved_offline">Uloženo lokálně, odešle se po připojení.</string>
+
+    <!-- Processing lists -->
+    <string name="list_empty_finds">Žádné otevřené nálezy</string>
+    <string name="list_empty_issues">Žádné otevřené závady</string>
+    <string name="action_done">VYŘÍZENO</string>
+    <string name="action_keep">PONECHAT</string>
+
+    <!-- Notifications -->
+    <string name="notif_channel_name">Hotel hlášení</string>
+    <string name="notif_channel_desc">Notifikace pro nové nálezy a závady</string>
+    <string name="notif_new_find">Nový nález</string>
+    <string name="notif_new_issue">Nová závada</string>
+
+    <!-- Common / errors -->
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Zrušit</string>
+    <string name="common_retry">Zkusit znovu</string>
+    <string name="error_generic">Něco se nepovedlo. Zkuste to znovu.</string>
+    <string name="error_offline">Bez připojení k internetu.</string>
+    <string name="error_timeout">Server neodpovídá.</string>
+    <string name="error_not_activated">Zařízení není aktivované.</string>
+</resources>
