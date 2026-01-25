@@ -22,6 +22,14 @@ jobs:
       - name: Prepare keystore
         run: |
           echo "${{ secrets.KEYSTORE_B64 }}" | base64 -d > /tmp/keystore.jks
+      - name: Unit tests
+        env:
+          HOTEL_STORE_FILE: /tmp/keystore.jks
+          HOTEL_STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          HOTEL_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          HOTEL_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          ./gradlew test
       - name: Assemble release
         env:
           HOTEL_STORE_FILE: /tmp/keystore.jks
