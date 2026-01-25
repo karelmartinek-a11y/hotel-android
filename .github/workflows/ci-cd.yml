@@ -13,9 +13,10 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+          cache: gradle
       - uses: android-actions/setup-android@v3
         with:
-          cmdline-tools-version: latest
+          cmdline-tools-version: 12266719
           accept-android-sdk-licenses: true
           log-accepted-android-sdk-licenses: true
           packages: "platforms;android-34 build-tools;34.0.0 platform-tools"
@@ -30,15 +31,7 @@ jobs:
           HOTEL_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           HOTEL_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          ./gradlew test
-      - name: Assemble release
-        env:
-          HOTEL_STORE_FILE: /tmp/keystore.jks
-          HOTEL_STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
-          HOTEL_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          HOTEL_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: |
-          ./gradlew assembleRelease --stacktrace
+          ./gradlew test assembleRelease --stacktrace
       - name: Sign APK (fallback)
         env:
           STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
