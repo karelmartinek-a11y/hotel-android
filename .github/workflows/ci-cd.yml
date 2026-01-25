@@ -63,7 +63,8 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           password: ${{ secrets.DEPLOY_PASS }}
           source: "app/build/outputs/apk/release/app-release.apk"
-          target: /tmp/hotel-app-release.apk
+          target: /tmp/
+          strip_components: 4
       - name: Deploy APK
         uses: appleboy/ssh-action@v1.2.0
         with:
@@ -73,7 +74,7 @@ jobs:
           script: |
             set -e
             install -d /var/www/hotelapp/download
-            mv /tmp/hotel-app-release.apk /tmp/hotel.apk
+            mv /tmp/app-release.apk /tmp/hotel.apk
             cp /tmp/hotel.apk /var/www/hotelapp/download/hotel.apk
             cp /var/www/hotelapp/download/hotel.apk /var/www/hotelapp/download/app.apk
             chown hotelapp:hotelapp /var/www/hotelapp/download/hotel.apk /var/www/hotelapp/download/app.apk
