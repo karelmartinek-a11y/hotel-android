@@ -3,6 +3,7 @@ name: CI/CD
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -56,18 +57,14 @@ jobs:
           fi
       - name: Show artifacts
         run: ls -l app/build/outputs/apk/release
-      - name: Install sshpass
-        run: sudo apt-get update && sudo apt-get install -y sshpass
       - name: Upload APK to server
-        run: |
-          test -f app/build/outputs/apk/release/app-release.apk
-          sshpass -p "${DEPLOY_PASS}" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${DEPLOY_USER}@${DEPLOY_HOST} "rm -rf ~/upload-hotel && mkdir -p ~/upload-hotel"
-          sshpass -p "${DEPLOY_PASS}" scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null app/build/outputs/apk/release/app-release.apk ${DEPLOY_USER}@${DEPLOY_HOST}:~/upload-hotel/app-release.apk
-          sshpass -p "${DEPLOY_PASS}" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${DEPLOY_USER}@${DEPLOY_HOST} "ls -l ~/upload-hotel"
-        env:
-          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
-          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
-          DEPLOY_PASS: ${{ secrets.DEPLOY_PASS }}
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          password: ${{ secrets.DEPLOY_PASS }}
+          source: app/build/outputs/apk/release/app-release.apk
+          target: /tmp/
       - name: Deploy APK
         uses: appleboy/ssh-action@v1.2.0
         with:
@@ -76,10 +73,9 @@ jobs:
           password: ${{ secrets.DEPLOY_PASS }}
           script: |
             set -e
-            ls -l ~/upload-hotel || true
-            test -f ~/upload-hotel/app-release.apk
+            test -f /tmp/app-release.apk
             install -d /var/www/hotelapp/download
-            install -m 0644 ~/upload-hotel/app-release.apk /var/www/hotelapp/download/hotel.apk
-            cp /var/www/hotelapp/download/hotel.apk /var/www/hotelapp/download/app.apk
-            chown hotelapp:hotelapp /var/www/hotelapp/download/hotel.apk /var/www/hotelapp/download/app.apk
-            rm -rf ~/upload-hotel
+            install -m 0644 /tmp/app-release.apk /var/www/hotelapp/download/HotelApp.apk
+            cp /var/www/hotelapp/download/HotelApp.apk /var/www/hotelapp/download/app.apk
+            chown hotelapp:hotelapp /var/www/hotelapp/download/HotelApp.apk /var/www/hotelapp/download/app.apk
+            rm -f /tmp/app-release.apk
