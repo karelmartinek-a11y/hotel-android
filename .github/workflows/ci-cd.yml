@@ -74,12 +74,13 @@ jobs:
           password: ${{ secrets.DEPLOY_PASS }}
           script: |
             set -e
-            if [ -d /tmp/app-release.apk ]; then
-              mv /tmp/app-release.apk/app-release.apk /tmp/app-release.apk && rmdir /tmp/app-release.apk || true
+            SRC=/tmp/app-release.apk
+            if [ -d "$SRC" ]; then
+              SRC="$SRC/app-release.apk"
             fi
-            test -f /tmp/app-release.apk
+            test -f "$SRC"
             install -d /var/www/hotelapp/download
-            install -m 0644 /tmp/app-release.apk /var/www/hotelapp/download/HotelApp.apk
+            install -m 0644 "$SRC" /var/www/hotelapp/download/HotelApp.apk
             cp /var/www/hotelapp/download/HotelApp.apk /var/www/hotelapp/download/app.apk
             chown hotelapp:hotelapp /var/www/hotelapp/download/HotelApp.apk /var/www/hotelapp/download/app.apk
-            rm -f /tmp/app-release.apk
+            rm -f "$SRC"
